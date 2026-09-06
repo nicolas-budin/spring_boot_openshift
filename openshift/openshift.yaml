@@ -1,21 +1,24 @@
 apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
-  name: hello-openshift
+  name: springboot-openshift-2
   labels:
-    app: hello-openshift
+    app: springboot-openshift-2
 spec: {}
 
 ---
 apiVersion: build.openshift.io/v1
 kind: BuildConfig
 metadata:
-  name: hello-openshift
+  name: springboot-openshift-2
   labels:
-    app: hello-openshift
+    app: springboot-openshift-2
 spec:
   source:
-    type: Binary
+    type: Git
+    git:
+      uri: https://github.com/nicolas-budin/spring_boot_openshift
+      ref: main
   strategy:
     type: Docker
     dockerStrategy:
@@ -23,28 +26,28 @@ spec:
   output:
     to:
       kind: ImageStreamTag
-      name: hello-openshift:latest
+      name: springboot-openshift-2:latest
 
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hello-openshift
+  name: springboot-openshift-2
   labels:
-    app: hello-openshift
+    app: springboot-openshift-2
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: hello-openshift
+      app: springboot-openshift-2
   template:
     metadata:
       labels:
-        app: hello-openshift
+        app: springboot-openshift-2
     spec:
       containers:
-        - name: hello-openshift
-          image: image-registry.openshift-image-registry.svc:5000/CHANGE_ME_NAMESPACE/hello-openshift:latest
+        - name: springboot-openshift-2
+          image: image-registry.openshift-image-registry.svc:5000/default/springboot-openshift-2:latest
           ports:
             - containerPort: 8080
           readinessProbe:
@@ -71,12 +74,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: hello-openshift
+  name: springboot-openshift-2
   labels:
-    app: hello-openshift
+    app: springboot-openshift-2
 spec:
   selector:
-    app: hello-openshift
+    app: springboot-openshift-2
   ports:
     - name: http
       port: 8080
@@ -86,13 +89,13 @@ spec:
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: hello-openshift
+  name: springboot-openshift-2
   labels:
-    app: hello-openshift
+    app: springboot-openshift-2
 spec:
   to:
     kind: Service
-    name: hello-openshift
+    name: springboot-openshift-2
   port:
     targetPort: http
   tls:
