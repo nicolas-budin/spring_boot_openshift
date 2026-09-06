@@ -5,7 +5,7 @@ metadata:
   labels:
     app: springboot-openshift-2
 data:
-  APP_MESSAGE: "Hello World depuis Spring Boot sur OpenShift !"
+  APP_MESSAGE: "Hello World depuis Spring Boot sur OpenShift"
 
 ---
 apiVersion: image.openshift.io/v1
@@ -57,7 +57,7 @@ spec:
     spec:
       containers:
         - name: springboot-openshift-2
-          image: image-registry.openshift-image-registry.svc:5000/CHANGE_ME_NAMESPACE/springboot-openshift-2:latest
+          image: image-registry.openshift-image-registry.svc:5000/default/springboot-openshift-2:latest
           ports:
             - containerPort: 8080
           env:
