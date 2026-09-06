@@ -32,6 +32,8 @@ curl http://localhost:8080/
 
 ## Tester dans docker
 
+  docker build -t hello-openshift:latest .
+  docker run -p 8080:8080 hello-openshift:latest
 
 ## Déployer sur OpenShift
 
