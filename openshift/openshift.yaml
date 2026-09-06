@@ -1,0 +1,100 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: hello-openshift
+  labels:
+    app: hello-openshift
+spec: {}
+
+---
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: hello-openshift
+  labels:
+    app: hello-openshift
+spec:
+  source:
+    type: Binary
+  strategy:
+    type: Docker
+    dockerStrategy:
+      dockerfilePath: Dockerfile
+  output:
+    to:
+      kind: ImageStreamTag
+      name: hello-openshift:latest
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-openshift
+  labels:
+    app: hello-openshift
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-openshift
+  template:
+    metadata:
+      labels:
+        app: hello-openshift
+    spec:
+      containers:
+        - name: hello-openshift
+          image: image-registry.openshift-image-registry.svc:5000/CHANGE_ME_NAMESPACE/hello-openshift:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 15
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-openshift
+  labels:
+    app: hello-openshift
+spec:
+  selector:
+    app: hello-openshift
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: hello-openshift
+  labels:
+    app: hello-openshift
+spec:
+  to:
+    kind: Service
+    name: hello-openshift
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect

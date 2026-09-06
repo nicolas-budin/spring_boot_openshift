@@ -1,0 +1,6 @@
+README.md
+target/classes/application.properties
+target/classes/com/example/hello/HelloController.class
+target/classes/com/example/hello/HelloOpenshiftApplication.class
+target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
+target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
