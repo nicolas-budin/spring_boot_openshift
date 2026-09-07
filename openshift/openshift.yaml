@@ -5,7 +5,7 @@ metadata:
   labels:
     app: springboot-openshift-2
 data:
-  APP_MESSAGE: "Hello World depuis Spring Boot sur OpenShift"
+  APP_MESSAGE: "Hello World depuis Spring Boot sur OpenShift !!!"
 
 ---
 apiVersion: image.openshift.io/v1
