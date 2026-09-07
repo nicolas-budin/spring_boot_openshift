@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot sur OpenShift</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <main class="card">
+        <p class="badge">Spring Boot &middot; OpenShift</p>
+        <h1 th:text="${message}">Message</h1>
+        <p class="hostname">Servi par <code th:text="${hostname}">hostname</code></p>
+    </main>
+</body>
+</html>
