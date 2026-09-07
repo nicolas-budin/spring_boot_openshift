@@ -45,6 +45,17 @@ metadata:
   name: springboot-openshift-2
   labels:
     app: springboot-openshift-2
+  annotations:
+    image.openshift.io/triggers: |-
+      [
+        {
+          "from": {
+            "kind": "ImageStreamTag",
+            "name": "springboot-openshift-2:latest"
+          },
+          "fieldPath": "spec.template.spec.containers[?(@.name==\"springboot-openshift-2\")].image"
+        }
+      ]
 spec:
   replicas: 1
   selector:
@@ -57,7 +68,7 @@ spec:
     spec:
       containers:
         - name: springboot-openshift-2
-          image: image-registry.openshift-image-registry.svc:5000/default/springboot-openshift-2:latest
+          image: image-registry.openshift-image-registry.svc:5000/CHANGE_ME_NAMESPACE/springboot-openshift-2:latest
           ports:
             - containerPort: 8080
           env:
